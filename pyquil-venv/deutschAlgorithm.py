@@ -78,10 +78,29 @@ def executar_deutsch(funcao, num_shots=100):
 # Executar
 print("🎯 ALGORITMO DE DEUTSCH")
 print("=" * 60)
+
+# Testando o algoritmo -  constante
+funcaoConst0 = {0: 0, 1: 0}  # constante 0
+resultado = executar_deutsch(funcaoConst0, num_shots=10)
     
-# Depois testar o algoritmo
-funcao = {0: 1, 1: 0}  # NOT - balanceada
-resultado = executar_deutsch(funcao, num_shots=10)
+print(f"\n📋 Esperado: CONSTANTE")
+print(f"🎯 Obtido: {resultado}")
+
+funcaoConst1 = {0: 1, 1: 1}  # constante 1
+resultado = executar_deutsch(funcaoConst1, num_shots=10)
     
-print(f"\n🎯 Esperado: BALANCEADA")
-print(f"📋 Obtido: {resultado}")
+print(f"\n📋 Esperado: CONSTANTE")
+print(f"🎯 Obtido: {resultado}")
+    
+# Testando o algoritmo - balanceada
+funcaoIdentidade = {0: 0, 1: 1}  # Identidade - balanceada
+resultado = executar_deutsch(funcaoIdentidade, num_shots=10)
+    
+print(f"\n📋 Esperado: BALANCEADA")
+print(f"🎯 Obtido: {resultado}")
+
+funcaoNOT = {0: 1, 1: 0}  # NOT - balanceada
+resultado = executar_deutsch(funcaoNOT, num_shots=10)
+    
+print(f"\n📋 Esperado: BALANCEADA")
+print(f"🎯 Obtido: {resultado}")
