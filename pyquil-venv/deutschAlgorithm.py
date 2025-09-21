@@ -16,10 +16,10 @@ def deutsch_algorithm(funcao):
     program = Program()
     program.declare('ro', 'BIT', 2)
     
-    # Inicializar: |01⟩
-    program += X(1)
-    program += H(0)
-    program += H(1)
+    # Estado inicial: |01⟩
+    program += X(1) # Aplica X no qubit 1: |0⟩ → |1⟩
+    program += H(0) # Aplica Hadamart no qubit 0: |0⟩ → (|0⟩ + |1⟩)/√2
+    program += H(1) # Aplica Hadamart no qubit 1: |1⟩ → (|0⟩ - |1⟩)/√2
     
     # Oracle
     if funcao == {0: 0, 1: 0}:       # Constante 0
@@ -59,21 +59,7 @@ def executar_deutsch(funcao, num_shots=100):
         
         print(f"📊 Resultados ({num_shots} execuções):")
         
-        # ACESSO CORRETO: resultado é um objeto, não array direto
-        # Precisamos acessar a propriedade correta
-        if hasattr(resultado, 'readout_data'):
-            # Tentativa 1: readout_data
-            dados = resultado.readout_data
-            print("✅ Usando readout_data")
-        elif hasattr(resultado, 'result_data'):
-            # Tentativa 2: result_data
-            dados = resultado.result_data
-            print("✅ Usando result_data")
-        else:
-            # Tentativa 3: inspecionar o objeto
-            print("🔍 Inspecionando objeto resultado...")
-            print(f"Atributos: {[attr for attr in dir(resultado) if not attr.startswith('_')]}")
-            dados = None
+        dados = resultado.readout_data
         
         if dados is not None:
             print(f"Dados extraídos: {dados}")
@@ -98,10 +84,6 @@ def executar_deutsch(funcao, num_shots=100):
                     else:
                         print("✅ CONSTANTE")
                         return "constante"
-        
-        # Se não conseguimos extrair, tentar método alternativo
-        print("🔄 Tentando método alternativo de extração...")
-        return executar_deutsch_alternativo(funcao, num_shots)
             
     except Exception as e:
         print(f"❌ Erro: {e}")
@@ -109,78 +91,9 @@ def executar_deutsch(funcao, num_shots=100):
         traceback.print_exc()
         return None
 
-def executar_deutsch_alternativo(funcao, num_shots=100):
-    """Método alternativo mais simples"""
-    print("🔄 Usando método alternativo...")
-    
-    try:
-        qc = get_qc('2q-qvm')
-        
-        # Circuito mais simples para debug
-        program = Program()
-        program.declare('ro', 'BIT', 1)
-        program += X(0)
-        program.measure(0, MemoryReference('ro', 0))
-        
-        compilado = qc.compile(program)
-        resultado = qc.run(compilado, trials=num_shots)
-        
-        print(f"🔍 Resultado alternativo: {resultado}")
-        print(f"Tipo: {type(resultado)}")
-        
-        # Tentar converter para string e analisar
-        resultado_str = str(resultado)
-        print(f"Como string: {resultado_str}")
-        
-        # Contar manualmente '1's e '0's
-        uns = resultado_str.count('1')
-        zeros = resultado_str.count('0')
-        
-        print(f"Zeros: {zeros}, Uns: {uns}")
-        
-        return "debug"
-        
-    except Exception as e:
-        print(f"❌ Erro no método alternativo: {e}")
-        return None
-
-def teste_debug():
-    """Teste simples para debug do formato de resultado"""
-    print("🐛 TESTE DE DEBUG - Formato do Resultado")
-    print("=" * 50)
-    
-    try:
-        qc = get_qc('1q-qvm')
-        
-        program = Program()
-        program.declare('ro', 'BIT', 1)
-        program += X(0)  # Coloca em |1⟩
-        program.measure(0, MemoryReference('ro', 0))
-        
-        compilado = qc.compile(program)
-        resultado = qc.run(compilado, trials=5)
-        
-        print("🔍 ANALISANDO OBJETO RESULTADO:")
-        print(f"Representação: {resultado}")
-        
-        # Listar todos os atributos públicos
-        atributos = [attr for attr in dir(resultado) if not attr.startswith('_')]
-        print(f"Atributos: {atributos}")
-        
-        # Testar atributos comuns
-        for attr in atributos:
-            try:
-                valor = getattr(resultado, attr)
-                print(f"{attr}: {type(valor)} = {valor}")
-            except:
-                print(f"{attr}: <erro ao acessar>")
-                
-    except Exception as e:
-        print(f"❌ Erro no debug: {e}")
-
 # Executar
 if __name__ == "__main__":
-    print("🎯 ALGORITMO DE DEUTSCH - Versão Debug")
+    print("🎯 ALGORITMO DE DEUTSCH")
     print("=" * 60)
     
     # Depois testar o algoritmo
