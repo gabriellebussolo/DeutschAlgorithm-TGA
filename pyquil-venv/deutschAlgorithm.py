@@ -76,13 +76,12 @@ def executar_deutsch(funcao, num_shots=100):
             return "constante"
 
 # Executar
-if __name__ == "__main__":
-    print("🎯 ALGORITMO DE DEUTSCH")
-    print("=" * 60)
+print("🎯 ALGORITMO DE DEUTSCH")
+print("=" * 60)
     
-    # Depois testar o algoritmo
-    funcao = {0: 1, 1: 0}  # NOT - balanceada
-    resultado = executar_deutsch(funcao, num_shots=10)
+# Depois testar o algoritmo
+funcao = {0: 1, 1: 0}  # NOT - balanceada
+resultado = executar_deutsch(funcao, num_shots=10)
     
-    print(f"\n🎯 Esperado: BALANCEADA")
-    print(f"📋 Obtido: {resultado}")
+print(f"\n🎯 Esperado: BALANCEADA")
+print(f"📋 Obtido: {resultado}")
