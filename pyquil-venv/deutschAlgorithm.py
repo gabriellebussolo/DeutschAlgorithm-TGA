@@ -40,7 +40,7 @@ def deutsch_algorithm(funcao):
     
     return program
 
-def executar_deutsch(funcao, num_shots=100):
+def executar_deutsch(funcao, num_shots):
     
     circuito = deutsch_algorithm(funcao)
     
@@ -53,21 +53,14 @@ def executar_deutsch(funcao, num_shots=100):
         
     dados = resultado.readout_data
         
-    if dados is not None:
-        print(f"Dados extraídos: {dados}")
-            
+    if dados is not None:    
         resultados_array = dados['ro']
-        print(f"Array de resultados: {resultados_array}")
                 
         primeiro_qubit = resultados_array[:, 0]
         zeros = np.sum(primeiro_qubit == 0)
         uns = np.sum(primeiro_qubit == 1)
-                
-        print(f"\n* Distribuição:")
-        print(f"|0⟩: {zeros} vezes")
-        print(f"|1⟩: {uns} vezes")
                     
-        if uns > zeros * 2:
+        if uns > zeros:
             return "balanceada"
         else:
             return "constante"
