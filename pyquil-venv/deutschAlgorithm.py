@@ -16,19 +16,19 @@ def deutsch_algorithm(funcao):
     program += H(1) # Aplica Hadamart no qubit 1: |1⟩ → (|0⟩ - |1⟩)/√2
     
     # Oracle - funções possíveis
-    if funcao == {0: 0, 1: 0}:       # Constante 0
+    if funcao == {0: 0, 1: 0}:       # Constante 0 - f(0) = 0, f(1) = 0
         print("📦 Oracle: Função constante 0")
         pass
-        
-    elif funcao == {0: 1, 1: 1}:     # Constante 1
+
+    elif funcao == {0: 1, 1: 1}:     # Constante 1 - f(0) = 1, f(1) = 1
         print("📦 Oracle: Função constante 1")
         program += X(1)
         
-    elif funcao == {0: 0, 1: 1}:     # Identidade
+    elif funcao == {0: 0, 1: 1}:     # Identidade - f(0) = 0, f(1) = 1
         print("📦 Oracle: Função identidade")
         program += CNOT(0, 1)
         
-    elif funcao == {0: 1, 1: 0}:     # NOT
+    elif funcao == {0: 1, 1: 0}:     # NOT - f(0) = 1, f(1) = 0
         print("📦 Oracle: Função NOT")
         program += X(0)
         program += CNOT(0, 1)
