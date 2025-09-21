@@ -4,6 +4,7 @@ from pyquil.quilatom import MemoryReference
 import numpy as np
 
 def deutsch_algorithm(funcao):
+    print("=" * 50)
     print(f"Analisando função: f(0)={funcao[0]}, f(1)={funcao[1]}")
     print("=" * 50)
     
@@ -40,14 +41,12 @@ def deutsch_algorithm(funcao):
     return program
 
 def executar_deutsch(funcao, num_shots=100):
-    """Executa o algoritmo com acesso correto aos dados"""
     
     circuito = deutsch_algorithm(funcao)
     
     qc = get_qc('2q-qvm')
     compilado = qc.compile(circuito)
         
-    # O resultado é QAMExecutionResult, precisamos extrair os dados
     resultado = qc.run(compilado, trials=num_shots)
         
     print(f"Resultados ({num_shots} execuções):")
@@ -64,43 +63,37 @@ def executar_deutsch(funcao, num_shots=100):
         zeros = np.sum(primeiro_qubit == 0)
         uns = np.sum(primeiro_qubit == 1)
                 
-        print(f"\n🎯 Distribuição:")
-        print(f"|0⟩: {zeros} vezes ({zeros/num_shots*100:.1f}%)")
-        print(f"|1⟩: {uns} vezes ({uns/num_shots*100:.1f}%)")
+        print(f"\n* Distribuição:")
+        print(f"|0⟩: {zeros} vezes")
+        print(f"|1⟩: {uns} vezes")
                     
         if uns > zeros * 2:
-            print("✅ BALANCEADA")
             return "balanceada"
         else:
-            print("✅ CONSTANTE")
             return "constante"
-
-# Executar
-print("🎯 ALGORITMO DE DEUTSCH")
-print("=" * 60)
 
 # Testando o algoritmo -  constante
 funcaoConst0 = {0: 0, 1: 0}  # constante 0
 resultado = executar_deutsch(funcaoConst0, num_shots=10)
     
-print(f"\n📋 Esperado: CONSTANTE")
-print(f"🎯 Obtido: {resultado}")
+print(f"\nEsperado: CONSTANTE")
+print(f"Obtido: {resultado}")
 
 funcaoConst1 = {0: 1, 1: 1}  # constante 1
 resultado = executar_deutsch(funcaoConst1, num_shots=10)
     
-print(f"\n📋 Esperado: CONSTANTE")
-print(f"🎯 Obtido: {resultado}")
+print(f"\nEsperado: CONSTANTE")
+print(f"Obtido: {resultado}")
     
 # Testando o algoritmo - balanceada
 funcaoIdentidade = {0: 0, 1: 1}  # Identidade - balanceada
 resultado = executar_deutsch(funcaoIdentidade, num_shots=10)
     
-print(f"\n📋 Esperado: BALANCEADA")
-print(f"🎯 Obtido: {resultado}")
+print(f"\nEsperado: BALANCEADA")
+print(f"Obtido: {resultado}")
 
 funcaoNOT = {0: 1, 1: 0}  # NOT - balanceada
 resultado = executar_deutsch(funcaoNOT, num_shots=10)
     
-print(f"\n📋 Esperado: BALANCEADA")
-print(f"🎯 Obtido: {resultado}")
+print(f"\nEsperado: BALANCEADA")
+print(f"Obtido: {resultado}")
