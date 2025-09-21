@@ -54,6 +54,8 @@ DeutschAlgorithm-TGA/
 ## 👨‍💻 Alunas
 
 Cinthia Becher
+
 Gabrielle Bussolo
+
 ---
 
